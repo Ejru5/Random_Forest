@@ -1,0 +1,13 @@
+CRUD operation on a resources
+
+C - Create
+R - Read
+U - Update
+D - Delete
+
+gzip - accept zipping
+
+## PostgreSQL Database Connection
+'pip install sqlmodel psycopg2'
+or
+'pip install sqlmodel psycopg2-binary'
