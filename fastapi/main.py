@@ -1,7 +1,9 @@
 from typing import Union,Optional, Literal 
-from fastapi import FastAPI,Header,HTTPException, Depends
+from fastapi import FastAPI,Header,HTTPException, Depends, Request
 from pydantic import BaseModel
 from typing_extensions import Annotated
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
+from fastapi.templating import Jinja2Templates
 # from sqlmodel import SQLModel,create_engine,Field,Session,update
 
 
@@ -36,6 +38,7 @@ from nltk.stem import WordNetLemmatizer
 
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
 hotel_details=pd.read_csv('./data/Hotel_details.csv',delimiter=',')
 hotel_rooms=pd.read_csv('./data/Hotel_Room_attributes.csv',delimiter=',')
@@ -70,7 +73,7 @@ def citybased(city):
         return data_list
     else:
         print('No Hotels Available')
-        return 'No Hotels Available'
+        return []
 
 room_no=[
      ('king',2),
@@ -146,6 +149,7 @@ def requirementbased(city,number,features):
     data_list = x.to_dict(orient='records')
     return data_list
 
+
 class cityBased(BaseModel):
     city : str
 
@@ -154,10 +158,103 @@ class requirementBased(BaseModel):
     number: int
     features : str
 
-@app.post('/city_based_recommendation')
-def city_based_recommendation(data:cityBased):
-    return citybased(data.city)
+@app.get("/")
+async def landing_page():
+    with open("index.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)
 
-@app.post('/requirement_based_recommendation')
-def requirement_based_recommendation(data:requirementBased):
-    return requirementbased(data.city, data.number, data.features)
+@app.post("/login")
+async def login(request: Request):
+    form_data = await request.form()
+    username = form_data.get("username")
+    password = form_data.get("password")
+
+    # Perform authentication logic here (e.g., calling an authentication API)
+    # Replace the following conditional statement with your authentication logic
+    if username == "admin" and password == "password":
+        return RedirectResponse(url="/home")
+    else:
+        return RedirectResponse(url="/")
+
+@app.post("/home")
+async def home_page():
+    with open("home.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)
+
+
+@app.get("/page1")
+async def page1():
+    with open("page1.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)
+
+@app.get("/page2")
+async def page2():
+    with open("page2.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)
+
+@app.get("/page3")
+async def page3():
+    with open("page3.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)
+
+
+
+
+@app.post('/city_based_recommendation')
+async def city_based_recommendation(request: Request):
+    form_data = await request.form()
+    city = form_data.get("city")
+    hotels   = citybased(city)
+
+    return templates.TemplateResponse(
+        "city_based.html",
+        {"request": request, "hotels": hotels}
+    )
+
+    # if hotels == 'No Hotels Available':
+    #     return JSONResponse(
+    #         status_code=404,
+    #         content={
+    #             "message": "No hotel recommendations found for the given city."
+    #         }
+    #     )
+    # else:
+    #     return JSONResponse(
+    #             status_code=200,
+    #             content={
+    #                 "message": "Hotel recommendations retrieved successfully.",
+    #                 "hotels": hotels
+    #             }
+    #         )
+    
+@app.get("/city_based.html")
+async def city_based():
+    with open("city_based.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)
+
+
+@app.post("/requirement_based_recommendation")
+async def requirement_based_recommendation(request: Request):
+    form_data = await request.form()
+    city = form_data.get("city")
+    number = form_data.get("number")
+    features = form_data.get("features")
+    recommendations =  requirementbased(city, number, features)
+
+    
+    return templates.TemplateResponse(
+        "feature_based.html",
+        {"request": request, "hotels": recommendations}
+    )
+
+@app.get("/feature_based.html", response_class=HTMLResponse)
+async def recommendation_page(request: Request):
+    with open("feature_based.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=200)

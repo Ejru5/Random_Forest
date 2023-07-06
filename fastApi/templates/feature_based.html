@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City Based Recommendation</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .heading {
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #f2f2f2;
+            padding: 10px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 100px;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading">
+        <h1>HOTEL RECOMMENDATION VAC-3</h1>
+    </div>
+    <div class="container">
+        <h2>City Based Recommendation</h2>
+        {% if recommendations %}
+            <table>
+                <tr>
+                    <th>Hotel Name</th>
+                    <th>Star Rating</th>
+                    <th>Address</th>
+                    <th>Room Amenities</th>
+                    <th>Rate Description</th>
+                </tr>
+                {% for recommendation in recommendations %}
+                <tr>
+                    <td>{{ hotel.hotelname }}</td>
+                    <td>{{ hotel.starrating }}</td>
+                    <td>{{ hotel.address }}</td>
+                    <td>{{ hotel.roomamenities }}</td>
+                    <td>{{ hotel.ratedescription }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No recommendations recommendations found for the given city.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

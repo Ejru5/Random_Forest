@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City Based Recommendation</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .heading {
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #f2f2f2;
+            padding: 10px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 100px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            width: 200px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button[type="submit"] {
+            width: 100px;
+            height: 30px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading">
+        <h1>HOTEL RECOMMENDATION VAC-3</h1>
+    </div>
+    <div class="container">
+        <h2>City Based Recommendation</h2>
+        <form action="/city_based_recommendation" method="post">
+            <input type="text" name="city" placeholder="Enter city">
+            <button type="submit">Get Recommendation</button>
+        </form>
+    </div>
+</body>
+</html>
