@@ -51,23 +51,23 @@
         <h1>HOTEL RECOMMENDATION VAC-3</h1>
     </div>
     <div class="container">
-        <h2>City Based Recommendation</h2>
-        {% if recommendations %}
+        <h2>Requirement Based Recommendation</h2>
+        {% if requireBased %}
             <table>
                 <tr>
                     <th>Hotel Name</th>
                     <th>Star Rating</th>
-                    <th>Address</th>
+                    <th>Room Type</th>
                     <th>Room Amenities</th>
                     <th>Rate Description</th>
                 </tr>
-                {% for recommendation in recommendations %}
+                {% for requireBase in requireBased %}
                 <tr>
-                    <td>{{ hotel.hotelname }}</td>
-                    <td>{{ hotel.starrating }}</td>
-                    <td>{{ hotel.address }}</td>
-                    <td>{{ hotel.roomamenities }}</td>
-                    <td>{{ hotel.ratedescription }}</td>
+                    <td>{{ requireBase.hotelname }}</td>
+                    <td>{{ requireBase.starrating }}</td>
+                    <td>{{ requireBase.roomtype }}</td>
+                    <td>{{ requireBase.roomamenities }}</td>
+                    <td>{{ requireBase.ratedescription }}</td>
                 </tr>
                 {% endfor %}
             </table>
